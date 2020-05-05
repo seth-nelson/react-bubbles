@@ -7,7 +7,7 @@ const initialColor = {
   code: { hex: "" }
 };
 
-const ColorList = ({ colors }) => {
+const ColorList = ({ colors, updateColors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -19,8 +19,7 @@ const ColorList = ({ colors }) => {
   // see editColor for what to change when color edit is complete in put request
   // update setEditing function to false
   // change setColorToEdit ti initial color and not color
-  const saveEdit = e => {
-    e.preventDefault();
+  const saveEdit = () => {
     axiosWithAuth()
       .put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
       .then(() => {
@@ -30,12 +29,15 @@ const ColorList = ({ colors }) => {
       .catch(err => console.error('error editing color', err))
   };
 
-
+  // make a delete request to delete this color
   const deleteColor = color => {
-    // make a delete request to delete this color
     axiosWithAuth()
       .delete(`http://localhost:5000/api/colors/${color.id}`)
-      // .then(res => setColorToEdit(res.data));
+      .then(res => {
+        console.log('delete successful', res)
+        window.location.reload()
+      })
+      .catch(err => console.error('error deleting color', err));
   };
 
   return (
