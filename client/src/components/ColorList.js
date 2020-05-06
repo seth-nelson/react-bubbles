@@ -34,10 +34,12 @@ const ColorList = ({ colors, updateColors }) => {
     axiosWithAuth()
       .delete(`http://localhost:5000/api/colors/${color.id}`)
       .then(() =>  {
-        axiosWithAuth()
-          .get(`http://localhost:5000/api/colors`)
-          .then(res => updateColors(res.data))
-          .catch(err => console.error('error deleting color', err));
+        // axiosWithAuth()
+        //   .get(`http://localhost:5000/api/colors`)
+        //   .then(res => updateColors(res.data))
+        //   .catch(err => console.error('error deleting color', err));
+        const newColorList = colors.filter(res => res.id !== color.id);
+        updateColors(newColorList);
       });
   }
 
