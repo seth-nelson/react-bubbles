@@ -33,12 +33,13 @@ const ColorList = ({ colors, updateColors }) => {
   const deleteColor = color => {
     axiosWithAuth()
       .delete(`http://localhost:5000/api/colors/${color.id}`)
-      .then(res => {
-        console.log('delete successful', res)
-        window.location.reload()
-      })
-      .catch(err => console.error('error deleting color', err));
-  };
+      .then(() =>  {
+        axiosWithAuth()
+          .get(`http://localhost:5000/api/colors`)
+          .then(res => updateColors(res.data))
+          .catch(err => console.error('error deleting color', err));
+      });
+  }
 
   return (
     <div className="colors-wrap">
